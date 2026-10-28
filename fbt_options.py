@@ -8,6 +8,9 @@ FIRMWARE_ORIGIN = "Official"
 # Default hardware target
 TARGET_HW = 7
 
+# Kiisu SMOL board revision: "V1A" or "V1B"
+KIISU_HW_REV = "V1B"
+
 # Optimization flags
 ## Optimize for size
 COMPACT = 0

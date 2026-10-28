@@ -42,11 +42,19 @@ void furi_hal_init_early(void) {
 
         // PA3 pull-down: keep periph_power OFF
         LL_PWR_EnableGPIOPullDown(LL_PWR_GPIO_A, LL_PWR_GPIO_BIT_3);
+#ifdef KIISU_HW_V1A
         // PC13 pull-up: OK button / WAKEUP_PIN2 needs defined state
         LL_PWR_EnableGPIOPullUp(LL_PWR_GPIO_C, LL_PWR_GPIO_BIT_13);
 
         // Configure wakeup on OK button
         LL_PWR_SetWakeUpPinPolarityLow(LL_PWR_WAKEUP_PIN2);
+#else
+        // PC13 pull-down: Back button (active high) / WAKEUP_PIN2 needs defined state
+        LL_PWR_EnableGPIOPullDown(LL_PWR_GPIO_C, LL_PWR_GPIO_BIT_13);
+
+        // Configure wakeup on Back button
+        LL_PWR_SetWakeUpPinPolarityHigh(LL_PWR_WAKEUP_PIN2);
+#endif
         LL_PWR_EnableWakeUpPin(LL_PWR_WAKEUP_PIN2);
 
         // Enter SHUTDOWN

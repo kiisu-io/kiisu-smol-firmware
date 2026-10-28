@@ -90,6 +90,15 @@ vars.AddVariables(
             "18",
         ],
     ),
+    EnumVariable(
+        "KIISU_HW_REV",
+        help="Kiisu SMOL board revision",
+        default="V1A",
+        allowed_values=[
+            "V1A",
+            "V1B",
+        ],
+    ),
     (
         "DIST_SUFFIX",
         "Suffix for binaries in build output for dist targets",

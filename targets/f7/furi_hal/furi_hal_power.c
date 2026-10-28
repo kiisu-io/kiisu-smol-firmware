@@ -287,7 +287,11 @@ void furi_hal_power_shutdown(void) {
     }
 
     // Prepare Wakeup pin
+#ifdef KIISU_HW_V1A
     LL_PWR_SetWakeUpPinPolarityLow(LL_PWR_WAKEUP_PIN2);
+#else
+    LL_PWR_SetWakeUpPinPolarityHigh(LL_PWR_WAKEUP_PIN2);
+#endif
     LL_PWR_EnableWakeUpPin(LL_PWR_WAKEUP_PIN2);
     LL_C2_PWR_EnableWakeUpPin(LL_PWR_WAKEUP_PIN2);
 
@@ -318,9 +322,13 @@ void furi_hal_power_shutdown(void) {
     WRITE_REG(PWR->PDCRE, 0);
     WRITE_REG(PWR->PUCRH, 0);
     WRITE_REG(PWR->PDCRH, 0);
-    // Only PA3 pull-down (keep periph_power OFF) and PC13 pull-up (OK button wakeup)
+    // Only PA3 pull-down (keep periph_power OFF) and PC13 pull matching the wakeup button
     LL_PWR_EnableGPIOPullDown(LL_PWR_GPIO_A, LL_PWR_GPIO_BIT_3);
-    LL_PWR_EnableGPIOPullUp(LL_PWR_GPIO_C, LL_PWR_GPIO_BIT_13);
+#ifdef KIISU_HW_V1A
+    LL_PWR_EnableGPIOPullUp(LL_PWR_GPIO_C, LL_PWR_GPIO_BIT_13); // OK button
+#else
+    LL_PWR_EnableGPIOPullDown(LL_PWR_GPIO_C, LL_PWR_GPIO_BIT_13); // Back button
+#endif
 
     __WFI();
     furi_crash("Insomniac core2");
